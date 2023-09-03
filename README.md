@@ -1,7 +1,10 @@
-# bread dot files
+# dotfiles
 
 This includes config files for:
+
 - i3wm
+- bash
+- vim
 - ranger
 - neofetch
 
