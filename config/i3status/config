@@ -1,0 +1,34 @@
+general {
+        colors = true
+        interval = 5
+}
+
+order += "volume master"
+#order += "disk /"
+#order += "memory"
+order += "cpu_usage"
+order += "tztime local"
+
+volume master {
+        format = "VOL: %volume"
+        format_muted = "VOL: MUTE (%volume)"
+        device = "default"
+}
+
+disk "/" {
+  format = "DISK: %avail"
+}
+
+memory {
+        format = "MEM: %available"
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
+}
+
+cpu_usage {
+	format = "CPU: %usage"
+}
+
+tztime local {
+        format = "%a %d %b %H:%M"
+}
