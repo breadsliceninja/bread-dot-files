@@ -1,11 +1,12 @@
 # dotfiles
 
-This includes config files for:
+This repo includes config files for:
 
 - i3wm
 - bash
 - vim
 - ranger
+- rofi
 - i3status
 - dunst
 - neofetch
