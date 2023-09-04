@@ -6,6 +6,8 @@ This includes config files for:
 - bash
 - vim
 - ranger
+- i3status
+- dunst
 - neofetch
 
 among other things.
