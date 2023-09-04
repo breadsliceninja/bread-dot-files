@@ -7,6 +7,3 @@ rofi.theme: NsCDE.rasi
 rofi.modi: run,drun,window,ssh
 rofi.show-icons: true
 rofi.scroll-method: 1
-
-/* Dark theme. */
-@import "~/.cache/wal/colors-rofi-dark"
