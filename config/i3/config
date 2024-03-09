@@ -6,9 +6,8 @@ set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font -misc-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
-#font pango:monospace 10
-#font pango:DejaVu Sans Mono 8
+#font -misc-fixed-medium-*-*-*-15-*-*-*-*-*-*-*
+font xft:cozette 10
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -16,23 +15,22 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i '~/Pictures/Wallpapers/street\ haze.png'
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3exit lock
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
+# NetworkManager systray program
 exec --no-startup-id nm-applet
 
+# Start audio systray program
+exec --no-startup-id pasystray
+
 # Additional layouts
-exec --no-startup-id i3-layouts
+#exec --no-startup-id i3-layouts
 
-# Open term on startup
-#exec i3-sensible-terminal
+# Set Resolution
+exec_always xrandr --output DP-0 --mode 2560x1440 --primary
 
-# Restore pywal
+# Restore pywal theme
 exec wal -R
-
-# Set key delay
-exec xset r rate 270 30
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -49,11 +47,15 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# open browser
+bindsym $mod+b exec firefox
+
 # kill focused window
-bindsym $mod+Shift+q kill
+#bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start rofi (a program launcher)
-bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindcode $mod+40 exec "rofi -modi drun,run -show drun -font 'cherry 10'"
 
 # change focus
 bindsym $mod+h focus left
@@ -99,6 +101,8 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
+for_window [class="Funkin"] floating enable
+
 # focus the parent container
 bindsym $mod+a focus parent
 
@@ -106,8 +110,8 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # Configure 5px of space between windows and to the screen edges.
-gaps inner 10
-#smart_gaps on
+gaps inner 0
+smart_gaps on
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -156,41 +160,44 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3?' -B ' Yes, exit i3 ' 'i3-msg exit' -f '-misc-fixed-medium-*-*-*-15-*-*-*-*-*-*-*'"
 
-# suspend / reboot / shutdown
-mode "EXIT: [s]uspend, [l]ogout, [r]eboot, [S]hutdown" {
-	bindsym s exec --no-startup-id i3exit suspend, mode "default"
+# logout / suspend / reboot / shutdown
+mode "EXIT: [l]ogout [s]uspend [r]eboot [S]hutdown" {
 	bindsym l exec --no-startup-id i3exit logout, mode "default"
+	bindsym s exec --no-startup-id i3exit suspend, mode "default"
+	bindsym h exec --no-startup-id i3exit hibernate, mode "default"
 	bindsym r exec --no-startup-id i3exit reboot, mode "default"
 	bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
 
 	bindsym Escape mode "default"
 	bindsym Return mode "default"
+	bindsym $mod+x mode "default"
 }
-bindsym $mod+x mode "EXIT: [s]uspend, [l]ogout, [r]eboot, [S]hutdown"
+
+bindsym $mod+x mode "EXIT: [l]ogout [s]uspend [r]eboot [S]hutdown"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+	# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym h resize shrink width 10 px or 10 ppt
+	bindsym j resize grow height 10 px or 10 ppt
+	bindsym k resize shrink height 10 px or 10 ppt
+	bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+	# same bindings, but for the arrow keys
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+	# back to normal: Enter or Escape or $mod+r
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -224,7 +231,14 @@ client.background       $bg
 # i3status
 bar {
 	position top
-	height 24
+	height 22
+	separator_symbol " | "
+	workspace_min_width 35
+	strip_workspace_numbers yes
+        status_command i3status
+	# hide tray
+	#tray_output none
+	tray_padding 3
 	colors {
 		background $col0
 		statusline $fg
@@ -232,11 +246,6 @@ bar {
 		focused_workspace $col1 $col1 $col7
 		active_workspace $col1 $col1 $col7
 		inactive_workspace $col0 $col0 $col4
-		urgent_workspace $col2 $col2 $col7
+		urgent_workspace $col6 $col6 $col0
 	}
-	separator_symbol " / "
-	workspace_min_width 35
-	strip_workspace_numbers yes
-        status_command i3status
-	tray_padding 4
 }
